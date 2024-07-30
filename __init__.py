@@ -5,6 +5,7 @@ from flask import Flask
 from mcpi.minecraft import Minecraft
 
 mc = Minecraft.create("server.altair.one", 8270)
+mc.postToChat(">> DETONATOR CONNECTED")
 
 
 def create_app(test_config=None):
