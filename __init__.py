@@ -30,8 +30,9 @@ def create_app(test_config=None):
 
     # a simple page that says hello
     @app.route('/boom')
-    def hello():
-        print('ALLAH BABAXXX')
+    def boom():
+        print('>> REQUEST RECIEVED')
+        mc.postToChat("Ur to be allah u akhbared")
         return 'Allahu akbar'
 
     return app
