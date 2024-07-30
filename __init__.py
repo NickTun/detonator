@@ -6,6 +6,7 @@ from mcpi.minecraft import Minecraft
 
 mc = Minecraft.create("server.altair.one", 8270)
 mc.postToChat(">> DETONATOR CONNECTED")
+print(mc.player.getTilePos())
 
 
 def create_app(test_config=None):
