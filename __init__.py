@@ -35,7 +35,7 @@ def create_app(test_config=None):
         print('>> REQUEST RECIEVED')
         with Client(SERVER_IP, 8270, passwd=RCON_PASS) as client:
             print(">> RCON CONNECTED")
-            client.run("kill @a")
+            client.run("execute as @e at @s run summon minecraft:tnt")
         return 'Allahu akbar'
 
     return app
