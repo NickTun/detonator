@@ -33,7 +33,7 @@ def create_app(test_config=None):
     # a simple page that says hello
     @app.route('/boom')
     def boom():
-        print('>> REQUEST RECIEVED')
+        print('>> REQUEST RECIEVED: BOOM')
         with Client(SERVER_IP, int(SERVER_PORT), passwd=RCON_PASS) as client:
             print(">> RCON CONNECTED")
             client.run("execute as @e at @s run summon tnt")
@@ -41,7 +41,7 @@ def create_app(test_config=None):
     
     @app.route('/<player_name>/shoot')
     def shoot(player_name):
-        print('>> REQUEST RECIEVED')
+        print('>> REQUEST RECIEVED: SHOOT')
         with Client(SERVER_IP, int(SERVER_PORT), passwd=RCON_PASS) as client:
             print(">> RCON CONNECTED")
 
@@ -61,6 +61,34 @@ def create_app(test_config=None):
             client.run('kill @e[tag=projectile]')
             client.run('kill @e[tag=position]')
             client.run('kill @e[tag=direction]')
+        return 'Allahu akbar'
+    
+    @app.route('/<player_name>/napalm')
+    def napalm(player_name):
+        print('>> REQUEST RECIEVED: NAPALM')
+        with Client(SERVER_IP, int(SERVER_PORT), passwd=RCON_PASS) as client:
+            print(">> RCON CONNECTED")
+            client.run('execute as '+player_name+' at @s run summon marker ^ ^ ^ {Tags:["napalm_position"]}')
+            client.run('data modify entity @e[tag=napalm_position,limit=1] Rotation set from entity '+player_name+' Rotation')
+            for i in range(50):
+                for a in range(i):
+                    client.run('execute as @e[tag=napalm_position,limit=1] at @s run summon falling_block ^'+str(a-i//2)+' ^40 ^'+str(i-25)+' {BlockState:{Name:"minecraft:fire"},Time:1,}')
+                time.sleep(0.02)
+            client.run('kill @e[tag=napalm_position]')
+        return 'Allahu akbar'
+    
+    @app.route('/<player_name>/lightning')
+    def lightning(player_name):
+        print('>> REQUEST RECIEVED: Lightning')
+        with Client(SERVER_IP, int(SERVER_PORT), passwd=RCON_PASS) as client:
+            print(">> RCON CONNECTED")
+            client.run('execute as '+player_name+' at @s run summon marker ^ ^ ^ {Tags:["lightning_position"]}')
+            client.run('data modify entity @e[tag=lightning_position,limit=1] Rotation set from entity '+player_name+' Rotation')
+            for i in range(50):
+                for a in range(i):
+                    print(client.run('execute as @e[tag=lightning_position,limit=1] at @s run summon lightning_bolt ^'+str(a-i//2)+' ^ ^'+str(i+1)))
+                time.sleep(0.02)
+            client.run('kill @e[tag=lightning_position]')
         return 'Allahu akbar'
 
     return app
