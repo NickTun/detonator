@@ -2,6 +2,7 @@ import os, math, time, random
 from dotenv import load_dotenv
 from flask import Flask, request
 from rcon.source import Client
+import json
 
 load_dotenv()
 
@@ -90,5 +91,23 @@ def create_app(test_config=None):
                 time.sleep(0.02)
             client.run('kill @e[tag=lightning_position]')
         return 'Allahu akbar'
+
+    @app.route('/<player_name>/build')
+    def build(player_name):
+        print('>> REQUEST RECIEVED: BUILD')
+        with Client(SERVER_IP, int(SERVER_PORT), passwd=RCON_PASS) as client:
+            print(">> RCON CONNECTED")
+            with open('data.json') as arr:
+                x = 0
+                for line in arr:
+                    convertedLine = json.loads(line)
+                    for z in range(len(convertedLine)):
+                        yAbs = float(convertedLine[z])
+                        for y in range(int(yAbs) + 5):
+                            client.run("execute as "+player_name+" at @s run setblock ~" + str(x + 1) + " ~" + str(y) + " ~" + str(z + 1) + " minecraft:grass_block")
+                    print('>>> LINE BUILT')
+                    x += 1
+            print(">>> FINISHED")
+        return 'Allahu ahahah'
 
     return app
